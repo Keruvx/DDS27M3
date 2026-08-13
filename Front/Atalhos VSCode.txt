@@ -1,0 +1,2 @@
+Formatar documneto - SHIFT + ALT + F
+Colocar comentario - Ctrl + ;
