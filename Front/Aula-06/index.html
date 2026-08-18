@@ -15,14 +15,60 @@
 
     <h2> JOGOS </h2>
     <!-- TABLE = CRIAR TABELA -->
-    <TABLE> 
+    <TABLE border="100"> 
         <!-- THEAD = CABEÇARIO DA COLUNA -->
         <thead>
             <!-- TR = CRIAÇÃO DA LINHA DA TABELA -->
             <tr>
+                <!-- TH = COLUNA DE UM CABEÇALHO -->
+                <th>ID</th>
+                <TH>NOME</TH>
+                <TH>GENERO</TH>
+                <TH>NOTA</TH>
+                <TH>VALOR</TH>
+                
 
             </tr>
         </thead>
+        <!-- TBODY CORPO DA TABELA -->
+         <tbody>
+            <TR>   
+                <!-- TD = CELULA DE LINHA DO CORPO -->
+                <td>1</td>
+                <td>OVERWATCH</td>
+                <td>HeroShutter</td>
+                <td>9.8</td>
+                <td>R$150,00</td>
+            </TR>
+            <tr>
+                <td> 1</td>
+                <td> Baldur's Gate 3</td>
+                <td> RPG</td>
+                <td> 9.9</td>
+                <td> R$250,00</td>
+            </tr>
+            <tr>
+                <td> 3</td>
+                <!-- Colspan = Diz quantas colunas a celula vai ocupar -->
+                <td colspan="3"> Nier: Automata </td>
+                <!-- rowspan = dis quanta linhas a celula vai ocupar  -->
+                <td rowspan="1"> R$208,00</td>
+            </tr>
+            <tr>
+                <td> 4</td>
+                <td> Persona 5</td>
+                <td> RPG</td>
+                <td> 9.8</td>
+                <td> R$98,00</td>
+            </tr>
+         </tbody>
+         <tfoot>
+            <tr>
+                <td colspan="10">
+                    Tabela feita por: Mamaco
+                </td>
+            </tr>
+         </tfoot>
     </TABLE>
 
 </main>
