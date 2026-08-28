@@ -1,0 +1,54 @@
+
+
+
+
+/* Seleciona todos os elementos. */
+*{
+    margin: 0PX;
+    padding: 0px;
+}
+
+ /* Seletor por TAG */
+body{
+    background-color: goldenrod;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 50px;
+
+}
+/* Seletor por ID */
+#topo{
+    background-color: navajowhite;
+    border: 2px solid black;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 10pX;
+    margin-top: 15px;
+}
+/* Seletor por class */
+.textofdc{
+    font-style: italic;
+    text-decoration: underline;
+    font-size: 15px;
+}
+.bloco{
+    background-color:ghostwhite;
+    margin-bottom: 10px;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 9px;
+}
+.destaque{
+    background-color: gold;
+    font-weight: bolder;
+}
+#caixa-unica{
+    padding: 10px;
+    border: 2px;
+    background-color: #ede9fe;
+
+}
