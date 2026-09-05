@@ -1,0 +1,301 @@
+Copie o código abaixo, salve em um arquivo com a extensão `.html` (exemplo: `asteroides.html`) e abra-o diretamente em qualquer navegador.
+
+**Controles**
+
+* **Setas Esquerda / Direita (ou A / D):** Rotacionar a nave
+* **Seta para Cima (ou W):** Propulsão / Acelerar
+* **Barra de Espaço:** Atirar / Reiniciar após o Game Over
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asteroids Classic</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #050508;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        canvas {
+            border: 2px solid #333;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.15);
+            background-color: #000000;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const W = canvas.width;
+        const H = canvas.height;
+
+        let score = 0;
+        let lives = 3;
+        let gameOver = false;
+        let asteroids = [];
+        let bullets = [];
+
+        let ship = {
+            x: W / 2,
+            y: H / 2,
+            r: 12,
+            a: Math.PI / 2,
+            rot: 0,
+            thrusting: false,
+            thrust: { x: 0, y: 0 }
+        };
+
+        function createAsteroidField(num) {
+            asteroids = [];
+            for (let i = 0; i < num; i++) {
+                let x, y;
+                do {
+                    x = Math.floor(Math.random() * W);
+                    y = Math.floor(Math.random() * H);
+                } while (distBetweenPoints(ship.x, ship.y, x, y) < 120);
+                asteroids.push(newAsteroid(x, y, 40));
+            }
+        }
+
+        function newAsteroid(x, y, r) {
+            let ast = {
+                x: x,
+                y: y,
+                xv: (Math.random() * 2 + 0.5) * (Math.random() < 0.5 ? 1 : -1),
+                yv: (Math.random() * 2 + 0.5) * (Math.random() < 0.5 ? 1 : -1),
+                r: r,
+                a: Math.random() * Math.PI * 2,
+                vert: Math.floor(Math.random() * 5 + 7),
+                offset: []
+            };
+            for (let i = 0; i < ast.vert; i++) {
+                ast.offset.push(Math.random() * 0.4 + 0.8);
+            }
+            return ast;
+        }
+
+        function distBetweenPoints(x1, y1, x2, y2) {
+            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Space"].includes(e.code)) {
+                e.preventDefault();
+            }
+
+            if (gameOver && e.code === 'Space') {
+                resetGame();
+                return;
+            }
+
+            if (e.code === 'ArrowLeft' || e.code === 'KeyA') ship.rot = 0.07;
+            if (e.code === 'ArrowRight' || e.code === 'KeyD') ship.rot = -0.07;
+            if (e.code === 'ArrowUp' || e.code === 'KeyW') ship.thrusting = true;
+            if (e.code === 'Space') shootBullet();
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.code === 'ArrowLeft' || e.code === 'KeyA' || e.code === 'ArrowRight' || e.code === 'KeyD') ship.rot = 0;
+            if (e.code === 'ArrowUp' || e.code === 'KeyW') ship.thrusting = false;
+        });
+
+        function shootBullet() {
+            if (bullets.length < 10 && !gameOver) {
+                bullets.push({
+                    x: ship.x + 4/3 * ship.r * Math.cos(ship.a),
+                    y: ship.y - 4/3 * ship.r * Math.sin(ship.a),
+                    xv: 7 * Math.cos(ship.a),
+                    yv: -7 * Math.sin(ship.a),
+                    life: 50
+                });
+            }
+        }
+
+        function resetGame() {
+            score = 0;
+            lives = 3;
+            gameOver = false;
+            ship.x = W / 2;
+            ship.y = H / 2;
+            ship.thrust = { x: 0, y: 0 };
+            ship.a = Math.PI / 2;
+            createAsteroidField(5);
+        }
+
+        createAsteroidField(5);
+
+        function gameLoop() {
+            ctx.fillStyle = '#0a0a0d';
+            ctx.fillRect(0, 0, W, H);
+
+            if (!gameOver) {
+                if (ship.thrusting) {
+                    ship.thrust.x += 0.12 * Math.cos(ship.a);
+                    ship.thrust.y -= 0.12 * Math.sin(ship.a);
+                } else {
+                    ship.thrust.x *= 0.985;
+                    ship.thrust.y *= 0.985;
+                }
+
+                ship.a += ship.rot;
+                ship.x += ship.thrust.x;
+                ship.y += ship.thrust.y;
+
+                if (ship.x < -ship.r) ship.x = W + ship.r;
+                else if (ship.x > W + ship.r) ship.x = -ship.r;
+                if (ship.y < -ship.r) ship.y = H + ship.r;
+                else if (ship.y > H + ship.r) ship.y = -ship.r;
+
+                // Desenhar nave
+                ctx.strokeStyle = '#00ffcc';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(
+                    ship.x + 4/3 * ship.r * Math.cos(ship.a),
+                    ship.y - 4/3 * ship.r * Math.sin(ship.a)
+                );
+                ctx.lineTo(
+                    ship.x - ship.r * (2/3 * Math.cos(ship.a) + Math.sin(ship.a)),
+                    ship.y + ship.r * (2/3 * Math.sin(ship.a) - Math.cos(ship.a))
+                );
+                ctx.lineTo(
+                    ship.x - ship.r * (2/3 * Math.cos(ship.a) - Math.sin(ship.a)),
+                    ship.y + ship.r * (2/3 * Math.sin(ship.a) + Math.cos(ship.a))
+                );
+                ctx.closePath();
+                ctx.stroke();
+
+                // Fogo da propulsão
+                if (ship.thrusting) {
+                    ctx.strokeStyle = '#ff5500';
+                    ctx.beginPath();
+                    ctx.moveTo(
+                        ship.x - ship.r * (2/3 * Math.cos(ship.a)),
+                        ship.y + ship.r * (2/3 * Math.sin(ship.a))
+                    );
+                    ctx.lineTo(
+                        ship.x - ship.r * 1.5 * Math.cos(ship.a),
+                        ship.y + ship.r * 1.5 * Math.sin(ship.a)
+                    );
+                    ctx.stroke();
+                }
+            }
+
+            // Tiros
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                let b = bullets[i];
+                b.x += b.xv;
+                b.y += b.yv;
+                b.life--;
+
+                if (b.x < 0) b.x = W; else if (b.x > W) b.x = 0;
+                if (b.y < 0) b.y = H; else if (b.y > H) b.y = 0;
+
+                ctx.fillStyle = '#ff0055';
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, 2.5, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (b.life <= 0) {
+                    bullets.splice(i, 1);
+                }
+            }
+
+            // Asteroides
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 1.5;
+            for (let i = asteroids.length - 1; i >= 0; i--) {
+                let a = asteroids[i];
+                a.x += a.xv;
+                a.y += a.yv;
+
+                if (a.x < -a.r) a.x = W + a.r; else if (a.x > W + a.r) a.x = -a.r;
+                if (a.y < -a.r) a.y = H + a.r; else if (a.y > H + a.r) a.y = -a.r;
+
+                ctx.beginPath();
+                for (let j = 0; j < a.vert; j++) {
+                    let angle = a.a + (j * Math.PI * 2) / a.vert;
+                    let r = a.r * a.offset[j];
+                    let x = a.x + r * Math.cos(angle);
+                    let y = a.y + r * Math.sin(angle);
+                    if (j === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.stroke();
+
+                // Colisão Tiro x Asteroide
+                for (let j = bullets.length - 1; j >= 0; j--) {
+                    let b = bullets[j];
+                    if (distBetweenPoints(a.x, a.y, b.x, b.y) < a.r) {
+                        bullets.splice(j, 1);
+                        if (a.r > 15) {
+                            asteroids.push(newAsteroid(a.x, a.y, a.r / 2));
+                            asteroids.push(newAsteroid(a.x, a.y, a.r / 2));
+                        }
+                        score += a.r > 25 ? 20 : a.r > 15 ? 50 : 100;
+                        asteroids.splice(i, 1);
+                        break;
+                    }
+                }
+
+                // Colisão Nave x Asteroide
+                if (!gameOver && distBetweenPoints(a.x, a.y, ship.x, ship.y) < a.r + ship.r) {
+                    lives--;
+                    if (lives <= 0) {
+                        gameOver = true;
+                    } else {
+                        ship.x = W / 2;
+                        ship.y = H / 2;
+                        ship.thrust = { x: 0, y: 0 };
+                    }
+                }
+            }
+
+            // Próxima fase
+            if (asteroids.length === 0) {
+                createAsteroidField(5 + Math.floor(score / 1000));
+            }
+
+            // UI / HUD
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '18px Courier New';
+            ctx.fillText(`PONTOS: ${score}`, 20, 35);
+            ctx.fillText(`VIDAS: ${lives}`, W - 130, 35);
+
+            if (gameOver) {
+                ctx.textAlign = 'center';
+                ctx.font = '36px Courier New';
+                ctx.fillStyle = '#ff0055';
+                ctx.fillText('GAME OVER', W / 2, H / 2 - 10);
+                ctx.font = '16px Courier New';
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText('Pressione ESPAÇO para reiniciar', W / 2, H / 2 + 30);
+                ctx.textAlign = 'left';
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>
+
+```

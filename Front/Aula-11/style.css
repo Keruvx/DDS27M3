@@ -1,0 +1,44 @@
+*{
+ margin: 0px;
+ padding: 0px;   
+}
+
+body{
+    background-color: violet;
+}
+.pai{
+    height: 200px;
+    width: 200px;
+}
+.filho{
+    height: 50px;
+    width: 50px;
+}
+
+#pai-estatico{
+    background-color: aquamarine;
+    position: static;
+}
+#fi-estatido{
+    background-color: black;
+}
+
+#pai-fixo{
+    background-color: crimson;
+    position: fixed;
+    top: 50px;
+    left: 100px;
+    z-index: -1;
+}
+#fi-fixo{
+    background-color: cornsilk;
+}
+#pai-grudado{
+    background-color: cornflowerblue;
+}
+#fi-grudado{
+    background-color: darkgreen;
+    position: sticky;
+    top: 10px;
+    left: 15px;
+}
