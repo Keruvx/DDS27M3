@@ -1,0 +1,122 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
+
+body{
+    background-color: rgb(114, 57, 0);
+    margin:  20px;
+    color: black;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+h1{
+    font-weight: 400;
+}
+h1{
+    font-weight: 600;
+}
+h1,h2{
+  font-family: "Pirata One", system-ui;
+  color: black;
+}
+
+.bloco{
+    background-color: rgb(121, 81, 3);
+    border: 2px solid rgb(252, 250, 250);
+    padding: 15px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+@font-face {
+    font-family: "FonteFoda";
+    src: url("./fonts/FonteFoda.ttf");
+}
+
+p{
+    font-family: "FonteFoda";
+    font-size: 15px;
+    color: red;
+}
+a{
+    color: white;
+}
+a:link{
+    color: black;
+}
+a:visited{
+    color: red;
+}
+a:active{
+    color: rgb(117, 0, 0);
+}
+a:hover{
+    color: white;
+    font-size: 25px;
+    text-decoration: none;
+}
+
+button:hover{
+    cursor: pointer;
+    background-color: black;
+    color: red;
+    padding: 5px;
+    transform: rotate(180deg);
+}
+button:active{
+    transform: scale3d(1,6,9);
+    transition: 0.5s;
+}
+input:focus{
+    transform: rotate(180deg);
+    outline: none;
+    border: 2px solid red;
+    background-color: white;
+}
+
+input:required{
+    border: 4px solid red;
+}
+
+input:valid{
+    background-color: green;
+}
+input:invalid{
+    background-color: pink;
+}
+input:checked{
+    accent-color: yellow;
+}
+input:disabled{
+    background-color: white;
+    color: blueviolet;
+}
+.lista-exemplo li:first-child{
+    font-weight: bold;
+    background-image:linear-gradient(90deg,pink, violet, blue);
+}
+.lista-exemplo li:last-child{
+    font-weight: bold;
+    background-image:linear-gradient(90deg,pink,violet, blue);
+}
+.lista-exemplo li:nth-child(2){
+    font-weight: bold;
+    background-image:linear-gradient(90deg,pink,violet, blue);
+}
+.caixa-vazia:empty{
+    width: 200px;
+    height: 250px;
+    background-color: white; 
+}
+.texto-especial::first-letter{
+    color: black;
+    font-size: 50px;
+}
+.texto-especial::first-line{
+    color: black;
+    font-size: 20px;
+}
