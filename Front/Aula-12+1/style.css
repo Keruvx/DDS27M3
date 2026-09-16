@@ -1,0 +1,17 @@
+body{
+    background-color:green;
+}
+span{
+    font-size: 50px;
+}
+.material-symbols-outlined{
+    font-size: 50px;
+    color: greenyellow;
+    transition: 2s;
+}
+.icones:hover{
+    color: green;
+    background-color: white;
+    font-size: 75px;
+    transition: 2s;
+}
