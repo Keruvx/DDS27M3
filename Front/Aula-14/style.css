@@ -242,3 +242,39 @@ p{
     justify-content: center;
 }
 
+.exemplo-grid{
+    display: grid;
+    gap: var(--gap);
+    grid-template-columns: 20% 40%;
+    grid-template-rows: 200px 80px 600px;
+}
+
+.exemplo-grid div{
+    background-color: chartreuse;
+    color: var(--color-white);
+    padding: 30px;
+    text-align: center;
+}
+
+.grid-duas-colunas{
+    display: grid;
+    gap: var(--gap);
+    grid-template-columns: repeat(2, 1fr);
+}
+.grid-duas-colunas div{
+    background-color: #d97706;
+    color: var(--color-white);
+    padding: 30px;
+    text-align: center;
+}
+.grid-quatro-colunas{
+    display: grid;
+    gap: var(--gap);
+    grid-template-columns: repeat(4,1fr);
+}
+.grid-quatro-colunas div {
+    background-color: plum;
+    color: var(--color-white);
+    padding: 30px;
+    text-align: center;
+}
